@@ -1,34 +1,25 @@
 import { useState } from "react";
-import { Link, useLoaderData, useParams } from "react-router";
-import { addToStoredMarkedAsRead, addToStoredWishlist } from "../../utilites/addToDB";
+import { Link, useLoaderData, useParams } from "react-router"
 
-export default function BookDetails() {
-    const data = useLoaderData();
+export default function ReadBookDetails() {
+    const books = useLoaderData();
     const { bookId } = useParams();
     const id = parseInt(bookId);
-    const book = data.find(book => book.bookId === id);
-    // console.log(Object.keys(book).join(', '));
+    const book = books.find(book => book.bookId === id);
     const { bookName, author, image, review, totalPages, rating, category, tags, publisher, yearOfPublishing } = book;
     const [showFullReview, setShowFullReview] = useState(false);
     const maxLength = 100;
     const isLongReview = review.length > maxLength;
-
-    const addToMarkedAsRead = (id) => {
-        addToStoredMarkedAsRead(id)
-    };
-    const addToWishlist = (id) => {
-        addToStoredWishlist(id);
-    };
-
     return (
-        <div className="space-y-2 md:space-y-4">
+        <div className="container mx-auto p-4">
             <div className="breadcrumbs text-lg">
                 <ul>
                     <li><Link to="/">Home</Link></li>
+                    <li><Link to="/listedBooks">Listed Book</Link></li>
                 </ul>
             </div>
             <div className="card flex flex-col md:flex-row h-full gap-2 md:gap-4 lg:gap-8 flex-grow">
-                <figure className="md:w-1/2 w-full md:h-96 lg:h-full h-60 md:p-12 p-8 rounded-xl my-auto bg-gray-100">
+                <figure className="md:w-1/2 w-full md:h-96 h-60 md:p-12 p-8 rounded-xl my-auto bg-gray-100">
                     <img
                         src={image}
                         alt={bookName} className="h-full rounded-xl object-contain" />
@@ -80,10 +71,6 @@ export default function BookDetails() {
                                 <p className="font-bold pl-2 md:pl-12 lg:pl-24">{yearOfPublishing}</p>
                                 <p className="font-bold pl-2 md:pl-12 lg:pl-24">{rating}</p>
                             </div>
-                        </div>
-                        <div className="flex gap-2 md:gap-4">
-                            <button onClick={() => addToMarkedAsRead(id)} className="transition-all ease-linear duration-200 btn bg-transparent outline outline-1 border-none outline-green-400 hover:outline-none hover:bg-sky-500 hover:text-white"><i className="fa-solid fa-circle-check"></i> Mark as Read</button>
-                            <button onClick={() => addToWishlist(id)} className="btn border-none bg-green-400 hover:bg-green-500 text-white transition-all ease-linear duration-200 w-fit"><i className="fa-solid fa-heart"></i> Add to Wishlist</button>
                         </div>
                     </div>
                 </div>
